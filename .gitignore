@@ -1,0 +1,5 @@
+# Ignore config file containing API key
+src/config.json
+
+# Ignore virtual environment directory
+env_typer/
