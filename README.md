@@ -24,8 +24,8 @@ Before you begin, ensure you have the following:
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/your-username/terminal_typer.git
-    cd terminal_typer
+    git clone https://github.com/sarj7/Terminal_Typer.git
+    cd Terminal_Typer
     ```
 
 2.  **Create and Activate a Virtual Environment:**
@@ -40,6 +40,106 @@ Before you begin, ensure you have the following:
     pip install -r requirements.txt
     ```
 
+### Platform-Specific Installation Instructions
+
+#### macOS
+
+1. **Install Python (if not already installed):**
+   ```bash
+   # Using Homebrew
+   brew install python
+
+   # Or download from https://www.python.org/downloads/macos/
+   ```
+
+2. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/sarj7/Terminal_Typer.git
+   cd Terminal_Typer
+   ```
+
+3. **Create and Activate a Virtual Environment:**
+   ```bash
+   python3 -m venv env_typer
+   source env_typer/bin/activate
+   ```
+
+4. **Install Dependencies:**
+   ```bash
+   pip3 install -r requirements.txt
+   ```
+
+5. **Run the Application:**
+   ```bash
+   python3 src/main.py
+   ```
+
+#### Linux
+
+1. **Install Python (if not already installed):**
+   ```bash
+   # Ubuntu/Debian
+   sudo apt update
+   sudo apt install python3 python3-pip python3-venv
+
+   # Fedora
+   sudo dnf install python3 python3-pip
+
+   # Arch Linux
+   sudo pacman -S python python-pip
+   ```
+
+2. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/sarj7/Terminal_Typer.git
+   cd Terminal_Typer
+   ```
+
+3. **Create and Activate a Virtual Environment:**
+   ```bash
+   python3 -m venv env_typer
+   source env_typer/bin/activate
+   ```
+
+4. **Install Dependencies:**
+   ```bash
+   pip3 install -r requirements.txt
+   ```
+
+5. **Run the Application:**
+   ```bash
+   python3 src/main.py
+   ```
+
+#### Windows
+
+1. **Install Python:**
+   - Download Python from the [official website](https://www.python.org/downloads/windows/)
+   - During installation, check "Add Python to PATH"
+   - Verify installation by opening Command Prompt and running `python --version`
+
+2. **Clone the Repository:**
+   ```cmd
+   git clone https://github.com/sarj7/Terminal_Typer.git
+   cd Terminal_Typer
+   ```
+
+3. **Create and Activate a Virtual Environment:**
+   ```cmd
+   python -m venv env_typer
+   env_typer\Scripts\activate
+   ```
+
+4. **Install Dependencies:**
+   ```cmd
+   pip install -r requirements.txt
+   ```
+
+5. **Run the Application:**
+   ```cmd
+   python src\main.py
+   ```
+
 ### Detailed Installation Guide
 
 1.  **Clone the Repository:**
@@ -47,11 +147,11 @@ Before you begin, ensure you have the following:
     Open your terminal (or command prompt on Windows) and clone the repository to your local machine using Git:
 
     ```bash
-    git clone https://github.com/your-username/terminal_typer.git
-    cd terminal_typer
+    git clone https://github.com/sarj7/Terminal_Typer.git
+    cd Terminal_Typer
     ```
 
-    Replace `your-username` with your GitHub username. This command downloads the project files to your computer.
+   This command downloads the project files to your computer.
 
 2.  **Create a Virtual Environment:**
 
@@ -133,8 +233,14 @@ Before you begin, ensure you have the following:
 
     To start the Terminal Typer application, run the `main.py` script:
 
+    **macOS/Linux:**
     ```bash
-    python src/main.py
+    python3 src/main.py
+    ```
+
+    **Windows:**
+    ```cmd
+    python src\main.py
     ```
 
 2.  **Enter a Prompt:**
@@ -220,6 +326,25 @@ Before you begin, ensure you have the following:
     -   Enter `y` to enter a new prompt and generate new text.
     -   Enter `n` to exit the application.
 
+## Troubleshooting
+
+### Common Issues by Platform
+
+#### Windows
+- **Terminal colors not displaying correctly**: Make sure you're using Windows Terminal, PowerShell, or a terminal that supports ANSI color codes.
+- **Permission errors**: Try running Command Prompt or PowerShell as Administrator.
+- **Keyboard input issues**: If certain key combinations don't work, try running in Windows Terminal instead of cmd.exe.
+
+#### macOS
+- **Permission denied during installation**: Use `sudo pip3 install -r requirements.txt` if needed.
+- **Terminal compatibility**: The application works best with Terminal.app or iTerm2.
+- **Python version conflict**: Use `python3` explicitly rather than `python` which might be linked to Python 2 on older macOS versions.
+
+#### Linux
+- **Missing dependencies**: If you encounter errors about missing packages, install them using your distribution's package manager.
+- **Display issues**: Make sure your terminal supports ANSI colors and Unicode characters.
+- **Virtual environment activation fails**: Check that your shell is compatible with the activation script.
+
 ## Example
 
 Here's an example of how to use the Terminal Typer application:
@@ -272,7 +397,7 @@ Here's an example of how to use the Terminal Typer application:
 
 ## Contributing
 
-Contributions are welcome! If you have any ideas for improving the application, feel free to submit a pull request or open an issue on the [GitHub repository](https://github.com/your-username/terminal_typer).
+Contributions are welcome! If you have any ideas for improving the application, feel free to submit a pull request or open an issue on the [GitHub repository](https://github.com/sarj7/Terminal_Typer.git).
 
 ## License
 
