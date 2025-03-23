@@ -1,4 +1,4 @@
-# Terminal Typer: Typing Practice Application
+# Terminal Typer: Practice typing in terminal
 
 ## Overview
 
