@@ -18,7 +18,7 @@ class TypingInterface:
         self.metrics = None
 
     def getch(self):
-        """Get a single character from the user without waiting for Enter."""
+        """Get a single character from user input"""
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
@@ -28,39 +28,28 @@ class TypingInterface:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-    def clear_screen(self):
-        """Clear the terminal screen."""
-        print("\033[H\033[J", end="")
-
     def display_text(self):
-        """Display the text with color-coded feedback."""
-        self.clear_screen()
+        """Display text with real-time feedback"""
+        print("\033[H\033[J", end="")  # Clear screen
+        print("Type the following text:\n" + "-" * 80)
         
-        print("Type the following text:")
-        print("-" * 80)
-        
+        # Display color-coded text based on user input
         for i, char in enumerate(self.text):
             if i < len(self.user_input):
-                if self.user_input[i] == char:
-                    # Correct character (green)
-                    sys.stdout.write(f"\033[32m{char}\033[0m")
-                else:
-                    # Incorrect character (red)
-                    sys.stdout.write(f"\033[31m{char}\033[0m")
+                color = "\033[32m" if self.user_input[i] == char else "\033[31m"
+                sys.stdout.write(f"{color}{char}\033[0m")
             elif i == len(self.user_input):
-                # Current position (underlined)
                 sys.stdout.write(f"\033[4m{char}\033[0m")
             else:
-                # Not yet typed
                 sys.stdout.write(char)
         
         print("\n" + "-" * 80)
         progress = min(100, int((len(self.user_input) / len(self.text)) * 100))
         print(f"Progress: {progress}% | Press ESC to finish")
-        sys.stdout.flush()  # <-- ensures immediate screen update
+        sys.stdout.flush()
     
     def start_typing_practice(self):
-        """Start a typing session with real-time feedback and an option to repeat the test."""
+        """Main typing practice loop"""
         repeat_same_text = True
         
         while repeat_same_text:
@@ -149,13 +138,14 @@ class TypingInterface:
                     return False
         
         return False  # Default return, should not be reached
-    
+
     def calculate_metrics(self):
+        """Calculate accuracy and errors"""
         accuracy = (self.correct_count / len(self.user_input)) * 100 if len(self.user_input) > 0 else 0
         return accuracy, self.errors
 
     def get_typing_data(self):
-        """Return the typing data for metrics calculation."""
+        """Return typing session data"""
         return {
             'typed_text': self.user_input,
             'reference_text': self.text

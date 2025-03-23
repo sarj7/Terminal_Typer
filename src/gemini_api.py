@@ -33,7 +33,7 @@ class GeminiAPI:
                 }
             ],
             "generationConfig": {
-                "temperature": 0.7,
+                "temperature": 0.9,
                 "topK": 40,
                 "topP": 0.95,
                 "maxOutputTokens": 200
