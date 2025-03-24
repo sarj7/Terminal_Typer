@@ -5,7 +5,6 @@ import sys
 class GeminiAPI:
     def __init__(self, api_key=None):
         self.api_key = api_key
-        # Updated to use gemini-1.5-flash, which is likely available for free tier
         self.base_url = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent"
     
     def set_api_key(self, api_key):
@@ -15,7 +14,7 @@ class GeminiAPI:
         if not self.api_key:
             raise ValueError("API key is not set.")
         
-        typing_prompt = f"Generate a paragraph for typing practice about: {prompt}. Make it 3-4 sentences long."
+        typing_prompt = f"{prompt}"
         
         headers = {
             "Content-Type": "application/json"
@@ -24,7 +23,7 @@ class GeminiAPI:
         data = {
             "contents": [
                 {
-                    "role": "user",  # Required field for Gemini API
+                    "role": "user",  
                     "parts": [
                         {
                             "text": typing_prompt
@@ -35,8 +34,7 @@ class GeminiAPI:
             "generationConfig": {
                 "temperature": 0.9,
                 "topK": 40,
-                "topP": 0.95,
-                "maxOutputTokens": 200
+                "topP": 0.95
             }
         }
         
