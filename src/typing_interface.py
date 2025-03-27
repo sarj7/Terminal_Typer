@@ -50,6 +50,27 @@ class TypingInterface:
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
+    def count_fully_typed_words(self, reference_text, typed_text):
+        """
+        Counts how many whole words from reference_text have been completely typed in typed_text.
+        """
+        reference_words = reference_text.split()
+        remaining_chars = len(typed_text)
+        typed_word_count = 0
+
+        for i, w in enumerate(reference_words):
+            word_len = len(w)
+            if remaining_chars >= word_len:
+                remaining_chars -= word_len
+                typed_word_count += 1
+                # Account for space after this word if not the last word in the reference
+                if i < len(reference_words) - 1 and remaining_chars > 0:
+                    remaining_chars -= 1  # Consume the space
+            else:
+                break
+
+        return typed_word_count
+
     def display_text(self):
         """Reset and simplify the display approach"""
         # Clear the screen
@@ -61,13 +82,25 @@ class TypingInterface:
         # Simplify by directly using the text without complex formatting
         display_width = self.terminal_width - 5
         
-        # Convert text to lines for display (simple wrapping)
+        # Convert text to words and handle hiding logic
+        text_words = self.text.split()
+
+        # Compute how many words user has fully typed in reference
+        typed_words_count = self.count_fully_typed_words(self.text, self.user_input)
+
+        # Only hide words if at least one word is fully typed
+        if typed_words_count > 0:
+            for i in range(typed_words_count, min(typed_words_count + self.words_to_hide, len(text_words))):
+                text_words[i] = '_' * len(text_words[i])
+        
+        modified_text = ' '.join(text_words)
+        
         text_lines = []
         current_line = ""
         line_indices = []  # Starting index of each line
         current_indices = []
         
-        for i, char in enumerate(self.text):
+        for i, char in enumerate(modified_text):
             current_line += char
             current_indices.append(i)
             
@@ -85,7 +118,7 @@ class TypingInterface:
         # Find line with cursor
         current_line_index = 0
         for i, start_idx in enumerate(line_indices):
-            next_idx = line_indices[i+1] if i+1 < len(line_indices) else len(self.text)
+            next_idx = line_indices[i+1] if i+1 < len(line_indices) else len(modified_text)
             if start_idx <= cursor_pos < next_idx:
                 current_line_index = i
                 break
@@ -149,8 +182,15 @@ class TypingInterface:
             self.metrics = Metrics()
             self.metrics.start_timer()
             
+            hide_count_input = input("How many words should be hidden ahead? ")
+            self.words_to_hide = int(hide_count_input)
+            
             self.display_text()
             
+            import time
+            last_redraw_time = time.time()
+            redraw_interval = 0.05  # Adjust as needed
+
             while len(self.user_input) < len(self.text):
                 char = self.getch()
                 
@@ -180,7 +220,14 @@ class TypingInterface:
                         else:
                             self.errors.append(char)
                 
-                self.display_text()
+                # Rate-limit screen redraw to reduce flicker
+                current_time = time.time()
+                if current_time - last_redraw_time >= redraw_interval:
+                    self.display_text()
+                    last_redraw_time = current_time
+            
+            # Do a final redraw after exiting the loop
+            self.display_text()
             
             self.metrics.stop_timer()
             self.metrics.update_metrics(self.user_input, self.text)
