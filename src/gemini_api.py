@@ -45,6 +45,8 @@ class GeminiAPI:
             response = requests.post(url, headers=headers, json=data)
             
             if response.status_code != 200:
+                if response.status_code == 401:
+                    print("Invalid API key. Please enter the correct one.")
                 print(f"API Error: Status code {response.status_code}")
                 print(f"Response: {response.text}")
                 return "The quick brown fox jumps over the lazy dog."
