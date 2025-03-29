@@ -44,6 +44,9 @@ Before you begin, ensure you have the following:
 - **Gemini API Key:** You'll need a valid API key from Google's Gemini API to generate text (see below for detailed instructions on obtaining one).
 - **Terminal with ANSI color support:** Most modern terminals support this feature.
 
+## API Keys
+- Gemini API key: Free for limited use.
+
 ## Obtaining a Gemini API Key
 
 Google's Gemini API offers a free tier that's suitable for personal projects like Terminal Typer. Here's how to get your API key:
