@@ -75,13 +75,13 @@ class TypingInterface:
         """Reset and simplify the display approach"""
         # Clear the screen
         os.system('clear')
-        
+
         # Get current cursor position
         cursor_pos = len(self.user_input)
-        
+
         # Simplify by directly using the text without complex formatting
         display_width = self.terminal_width - 5
-        
+
         # Convert text to words and handle hiding logic
         text_words = self.text.split()
 
@@ -91,30 +91,36 @@ class TypingInterface:
         # Only hide words if at least one word is fully typed
         if typed_words_count > 0:
             for i in range(typed_words_count, min(typed_words_count + self.words_to_hide, len(text_words))):
-                text_words[i] = '_' * len(text_words[i])
-        
+                # Show typed characters of the hidden word
+                hidden_word = text_words[i]
+                typed_length = len(self.user_input) - sum(len(w) + 1 for w in text_words[:i])
+                if 0 < typed_length <= len(hidden_word):
+                    text_words[i] = hidden_word[:typed_length] + '_' * (len(hidden_word) - typed_length)
+                else:
+                    text_words[i] = '_' * len(hidden_word)
+
         modified_text = ' '.join(text_words)
-        
+
         text_lines = []
         current_line = ""
         line_indices = []  # Starting index of each line
         current_indices = []
-        
+
         for i, char in enumerate(modified_text):
             current_line += char
             current_indices.append(i)
-            
+
             if len(current_line) >= display_width or char == '\n':
                 text_lines.append(current_line.rstrip('\n'))
                 line_indices.append(current_indices[0])  # Start index of this line
                 current_line = ""
                 current_indices = []
-        
+
         # Add the last line if needed
         if current_line:
             text_lines.append(current_line)
             line_indices.append(current_indices[0])
-        
+
         # Find line with cursor
         current_line_index = 0
         for i, start_idx in enumerate(line_indices):
@@ -122,25 +128,25 @@ class TypingInterface:
             if start_idx <= cursor_pos < next_idx:
                 current_line_index = i
                 break
-        
+
         # Always show at least first 6 lines to ensure beginning is visible
         visible_start = 0 if current_line_index < 6 else current_line_index - 5
         visible_end = min(len(text_lines), visible_start + self.max_display_lines)
-        
+
         # Display header
         print("Terminal Typer - Type the text below:")
         print("-" * display_width)
-        
+
         # Display each line with color highlighting
         for i in range(visible_start, visible_end):
             line = text_lines[i]
             start_idx = line_indices[i]
-            
+
             # Format this line with color highlighting
             formatted_line = ""
             for j, char in enumerate(line):
                 char_idx = start_idx + j
-                
+
                 if char_idx < cursor_pos:
                     # Already typed characters
                     if char_idx < len(self.user_input) and self.user_input[char_idx] == char:
@@ -153,16 +159,16 @@ class TypingInterface:
                 else:
                     # Not yet typed
                     formatted_line += char
-            
+
             print(formatted_line)
-        
+
         # Show indicators and progress
         print("-" * display_width)
         if visible_start > 0:
             print("↑ More text above")
         if visible_end < len(text_lines):
             print("↓ More text below")
-            
+
         progress = min(100, int((len(self.user_input) / len(self.text)) * 100))
         print(f"Progress: {progress}% | Press ESC to finish | Typed: {len(self.user_input)}/{len(self.text)}")
         sys.stdout.flush()
